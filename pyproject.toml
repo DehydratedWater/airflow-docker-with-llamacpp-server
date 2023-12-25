@@ -10,6 +10,12 @@ packages = [{include = "local_llm_docker_hosting"}]
 python = "^3.11"
 langchain = {extras = ["all"], version = "^0.0.352"}
 openai = "^1.6.1"
+scikit-learn = "^1.3.2"
+pandas = "^2.1.4"
+pillow = "^10.1.0"
+torch = "^2.1.2"
+torchvision = "^0.16.2"
+torchaudio = "^2.1.2"
 
 
 [build-system]
