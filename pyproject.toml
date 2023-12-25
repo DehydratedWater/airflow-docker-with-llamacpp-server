@@ -1,0 +1,17 @@
+[tool.poetry]
+name = "local-llm-docker-hosting"
+version = "0.1.0"
+description = ""
+authors = ["Ignacy Daszkiewicz <ignacy.daszkiewicz@gmail.com>"]
+readme = "README.md"
+packages = [{include = "local_llm_docker_hosting"}]
+
+[tool.poetry.dependencies]
+python = "^3.11"
+langchain = {extras = ["all"], version = "^0.0.352"}
+openai = "^1.6.1"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
