@@ -15,4 +15,4 @@ RUN pip3 install llama-cpp-python[server]
 
 # ENTRYPOINT [ "" ]
 
-ENTRYPOINT ["python3", "-m", "llama_cpp.server", "--model", "models/llama-2-7b.Q5_K_M.gguf", "--n_gpu_layers", "35", "--port", "8080", "--host", "0.0.0.0"]
+ENTRYPOINT ["python3", "-m", "llama_cpp.server", "--model", "models/mixtral-8x7b-v0.1.Q5_K_M.gguf", "--n_gpu_layers", "35", "--port", "8080", "--host", "0.0.0.0"]
