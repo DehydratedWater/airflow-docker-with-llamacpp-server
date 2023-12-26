@@ -6,7 +6,7 @@ model = "models/mixtral-8x7b-v0.1.Q5_K_M.gguf"
 
 llm = ChatOpenAI(temperature=0.7,
                 model=model, 
-                openai_api_base="http://0.0.0.0:5555/v1", 
+                openai_api_base="http://0.0.0.0:5556/v1", 
                 openai_api_key="sx-xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
                 max_tokens=2000,
                 model_kwargs={
