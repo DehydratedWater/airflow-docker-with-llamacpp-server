@@ -75,7 +75,7 @@ __Warning__: _You may need to adapt the Nvidia image version used in `LocalLLama
 2. Modify `LocalLLamaCPPServerDockerfile` to include the correct model name and the number of layers to be passed to the GPU in the `ENTRYPOINT` section.
 3. To add extra Python packages, use `poetry add [name of package]` or modify `pyproject.toml` and then run `poetry install` and `poetry update`. Select the created poetry environment in your IDE for type checking.
 4. Run `./build_llm_server.sh` to build the dockerized version of the LLama.cpp server with GPU support.
-5. Execute `./run_llm_server.sh` and then `docker kill llm-server`. Server will run on `5556` port, you can check loaded models `http://localhost:5556/v1/models` or documentation `http://localhost:5556/docs#/`
+5. Execute `./run_llm_server.sh` and `docker kill llm-server` and to stop it. Server will run on `5556` port, you can check loaded models `http://localhost:5556/v1/models` or documentation `http://localhost:5556/docs#/`
 6. See `run_completion_on_local_llama.py` as a starting point for development without Airflow. You can run it within the Poetry environment.
 
 ### Create `.env` for Airflow
