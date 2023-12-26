@@ -1,20 +1,21 @@
-# Hosting Airflow with local LLMs
+# Hosting Airflow with Local LLMs
 
-## Goal of this project
-This project is meant to be threated as a starter project for working with locally hosted LLMs via LLama.Cpp and running Airflow Dags that can use locally hosted LLMs with Langchain.
+## Goal of This Project
+This project is intended to serve as a starter project for working with locally hosted Large Language Models (LLMs) using LLama.Cpp. It focuses on running Airflow DAGs that can utilize these locally hosted LLMs in conjunction with Langchain.
 
-## Components provided by this project
-1. Airflow with Celery and Redis
-2. PostgreSQL 15 
-3. Python 3.11 + pytorch, langchain, openai, pandas, ect
-4. Dockerized python [llama.cpp server](https://github.com/abetlen/llama-cpp-python) with support for Nvidia GPU accesable from aiflow
-5. Scripts for building and running Dockers
-6. Dag example for connectiong with locally hosted LLM from Airflow with use of Langchain
+## Components Provided by This Project
+1. Airflow integrated with Celery and Redis.
+2. PostgreSQL 15.
+3. Python 3.11 including libraries such as PyTorch, Langchain, OpenAI, pandas, etc.
+4. Dockerized Python [llama.cpp server](https://github.com/abetlen/llama-cpp-python) with support for Nvidia GPU, accessible from Airflow.
+5. Scripts for building and running Docker containers.
+6. DAG example for connecting with a locally hosted LLM from Airflow using Langchain.
 
 ## Prerequisites
-1. Nvidia GPU/GPUs with enough VRAM to run desired models
-2. Nvidia drivers with cuda support for your system
-3. Try `nvidia-smi` to check if drivers work correctly
+1. Nvidia GPU(s) with sufficient VRAM to run the desired models.
+2. Nvidia drivers with CUDA support for your system.
+3. Run `nvidia-smi` to verify that the drivers are working correctly.
+
 
 ```shell
 (base) ➜  ~ nvidia-smi
@@ -49,56 +50,54 @@ Tue Dec 26 14:02:31 2023
 
 ```
 
-4. `Python 3.11` installed
-5. Instaled `docker` with configured sudo-less docker user [Docker installation on Ubuntu 22.04](https://www.digitalocean.com/community/tutorials/how-to-install-and-use-docker-on-ubuntu-22-04), 
-6. Installed `docker compose` [Docker compose installation tutorial on Ubuntu 22.04](https://www.digitalocean.com/community/tutorials/how-to-install-and-use-docker-compose-on-ubuntu-22-04)
-6. Instaled `poetry`, used for local type checking and dag development
-7. Model in `GUFF` format [Good place to find models, TheBloke](https://huggingface.co/TheBloke)
+4. `Python 3.11` installed.
+5. Installed `docker` with configured sudo-less docker user. For Docker installation on Ubuntu 22.04, refer to this [DigitalOcean tutorial](https://www.digitalocean.com/community/tutorials/how-to-install-and-use-docker-on-ubuntu-22-04).
+6. Installed `docker-compose`. For Docker Compose installation on Ubuntu 22.04, see this [DigitalOcean tutorial](https://www.digitalocean.com/community/tutorials/how-to-install-and-use-docker-compose-on-ubuntu-22-04).
+7. Installed `poetry`, used for local type checking and DAG development.
+8. Model in `GUFF` format. A good place to find models is [TheBloke on Hugging Face](https://huggingface.co/TheBloke).
 
-__Warning__: _You may need to adapt Nvidia image version used in `LocalLLamaCPPServerDockerfile` to use CUDA version compatible with your driver, in my example it is `CUDA Version: 12.2`_
+__Warning__: _You may need to adapt the Nvidia image version used in `LocalLLamaCPPServerDockerfile` to match the CUDA version compatible with your driver. In my example, it is `CUDA Version: 12.2`_.
 
-
-## How to start
+## How to Start
 ### Run Airflow with LLama.cpp
-1. Download this repository or create new with this template
-2. Download choosen LLM model in `GUFF` format (or any other supported by LLama.Cpp) and put LLM model into `models` folder
-3. Modify `LocalLLamaCPPServerDockerfile` to contain correct model name and number of layers that should be passed to GPU in `ENTRYPOINT` section
-4. To add extra python packages use `poetry add [name of package]` or modify `pyproject.toml` and run `poetry install`, `poetry update`, select created poetry enviroment in your IDE to use typechecking
-5. Run `./build_all.sh` after making it executable (if needed use `chmod +x name_of_script` for all scripts, example `sudo chmod +x build_all.sh`)
-6. After whole build is finished, there should be docker image `llm-server` containing dockerized `llama.cpp` server with support for gpu, and `extending_airflow` image, containing airflow extended with choosen python libraries
-7. To run it all, run `./start_all.sh` and to stop it `./stop_all.sh`
-8. Open browser and type http://0.0.0.0:8080 to launch the airflow webserver, use username: `airflow` and password: `airflow` to log in 
-9. See `dags/test_dag.py` and `dags/test_connection_to_local_llm.py` as starting point
+1. Download this repository or create a new one using this template.
+2. Download the chosen LLM model in `GUFF` format (or any other format supported by LLama.Cpp) and place it in the `models` folder.
+3. Modify `LocalLLamaCPPServerDockerfile` to include the correct model name and the number of layers to be passed to the GPU in the `ENTRYPOINT` section.
+4. To add extra Python packages, use `poetry add [name of package]` or modify `pyproject.toml` and then run `poetry install` and `poetry update`. Select the created poetry environment in your IDE for type checking.
+5. Run `./build_all.sh` after making it executable (use `chmod +x name_of_script` for all scripts, e.g., `sudo chmod +x build_all.sh`).
+6. After the build is complete, there should be a Docker image `llm-server` containing the dockerized `llama.cpp` server with GPU support, and an `extending_airflow` image, containing Airflow extended with chosen Python libraries.
+7. To run everything, execute `./start_all.sh` and to stop it, use `./stop_all.sh`.
+8. Open a browser and navigate to http://0.0.0.0:8080 to launch the Airflow webserver. Log in with username: `airflow` and password: `airflow`.
+9. Refer to `dags/test_dag.py` and `dags/test_connection_to_local_llm.py` as starting points.
 
-
-### How to use just dockerized model without Airflow
-1. Download choosen LLM model in `GUFF` format (or any other supported by LLama.Cpp) and put LLM model into `models` folder
-2. Modify `LocalLLamaCPPServerDockerfile` to contain correct model name and number of layers that should be passed to GPU in `ENTRYPOINT` section
-3. To add extra python packages use `poetry add [name of package]` or modify `pyproject.toml` and run `poetry install`, `poetry update`,  select created poetry enviroment in your IDE to use typechecking
-4. Run `./build_llm_server.sh` to build dockerized version of LLama.cpp server with support for GPU
-5. Run `./run_llm_server.sh` and `docker kill llm-server`
-6. See `run_completion_on_local_llama.py` as a starting point for development without Airflow, you can run it with Poetry enviroment
-
+### Using Just the Dockerized Model Without Airflow
+1. Download the chosen LLM model in `GUFF` format (or any other format supported by LLama.Cpp) and place it in the `models` folder.
+2. Modify `LocalLLamaCPPServerDockerfile` to include the correct model name and the number of layers to be passed to the GPU in the `ENTRYPOINT` section.
+3. To add extra Python packages, use `poetry add [name of package]` or modify `pyproject.toml` and then run `poetry install` and `poetry update`. Select the created poetry environment in your IDE for type checking.
+4. Run `./build_llm_server.sh` to build the dockerized version of the LLama.cpp server with GPU support.
+5. Execute `./run_llm_server.sh` and then `docker kill llm-server`. Server will run on `5556` port, you can check loaded models `http://localhost:5556/v1/models` or documentation `http://localhost:5556/docs#/`
+6. See `run_completion_on_local_llama.py` as a starting point for development without Airflow. You can run it within the Poetry environment.
 
 ### Create `.env` for Airflow
-Example of `.env`file
+Example of an `.env` file:
 ```
 AIRFLOW_UID=1000
 AIRFLOW_GID=0
 ```
 
 ## Workflow
-1. After installation connect poetry enviroment to your IDE to have typechecking
-2. You may use `DBeaver` or similar tool, to create extra database in provided `PostgreSQL` and use `airflow postgres hooks` to communicate with it from inside `Airflow dags`
-3. Every `Dag` created inside `dags` folder will be visible and usable inside `Airflow`
-4. You can use package `nvtop` to monitor gpu usage [nvtop github](https://github.com/Syllo/nvtop)
-5. There are already created volumes for storing `sql`, and saving raw data for processing `data` (for more complex projects it should be replaced with some `S3` integration)
+1. After installation, connect the poetry environment to your IDE for type checking.
+2. Consider using `DBeaver` or a similar tool to create an extra database in the provided `PostgreSQL` and utilize `airflow postgres hooks` for communication from within `Airflow DAGs`.
+3. Every `DAG` created in the `dags` folder will be visible and usable in `Airflow`.
+4. The `nvtop` package can be used to monitor GPU usage. See [nvtop on GitHub](https://github.com/Syllo/nvtop).
+5. Volumes are already created for storing SQL scripts and raw data (`sql` and `data`). For more complex projects, consider integrating with a service like `S3`.
 
+## Known Limitations
+1. Currently, this template does not support Kubernetes, but it could be added relatively easily.
+2. The template uses default passwords for Air
 
-## Known limitations
-1. Currently these template has no support for kubernetes, but it may be added relatively easy
-2. This template uses default passwords for Aiflow, PostgreSQL and that should be changed in `docker-compose.yaml`
-
+flow and PostgreSQL, which should be changed in `docker-compose.yaml`.
 
 ## Credits
-Parts of that template was created based on this tutorial [coder2j YouTube tutorial](https://www.youtube.com/watch?v=K9AnJ9_ZAXE) [coder2j github repo](https://github.com/coder2j/airflow-docker) and some insights from this [Reddit thread](https://www.reddit.com/r/LocalLLaMA/comments/17ffbg9/using_langchain_with_llamacpp/)
+Parts of this template were created based on this tutorial: [coder2j's YouTube tutorial](https://www.youtube.com/watch?v=K9AnJ9_ZAXE) and [coder2j's GitHub repo](https://github.com/coder2j/airflow-docker), along with insights from this [Reddit thread](https://www.reddit.com/r/LocalLLaMA/comments/17ffbg9/using_langchain_with_llamacpp/).
+
