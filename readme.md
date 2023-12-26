@@ -7,7 +7,7 @@ This project is meant to be threated as a starter project for working with local
 1. Airflow with Celery and Redis
 2. PostgreSQL 15 
 3. Python 3.11 + pytorch, langchain, openai, pandas, ect
-4. Dockerized LLama.Cpp server with support for Nvidia GPU accesable from aiflow
+4. Dockerized python [llama.cpp server](https://github.com/abetlen/llama-cpp-python) with support for Nvidia GPU accesable from aiflow
 5. Scripts for building and running Dockers
 6. Dag example for connectiong with locally hosted LLM from Airflow with use of Langchain
 
@@ -67,7 +67,7 @@ __Warning__: _You may need to adapt Nvidia image version used in `LocalLLamaCPPS
 5. Run `./build_all.sh` after making it executable (if needed use `chmod +x name_of_script` for all scripts, example `sudo chmod +x build_all.sh`)
 6. After whole build is finished, there should be docker image `llm-server` containing dockerized `llama.cpp` server with support for gpu, and `extending_airflow` image, containing airflow extended with choosen python libraries
 7. To run it all, run `./start_all.sh` and to stop it `./stop_all.sh`
-8. Use username: `airflow` and password: `airflow` to log in 
+8. Open browser and type http://0.0.0.0:8080 to launch the airflow webserver, use username: `airflow` and password: `airflow` to log in 
 9. See `dags/test_dag.py` and `dags/test_connection_to_local_llm.py` as starting point
 
 
@@ -92,6 +92,7 @@ AIRFLOW_GID=0
 2. You may use `DBeaver` or similar tool, to create extra database in provided `PostgreSQL` and use `airflow postgres hooks` to communicate with it from inside `Airflow dags`
 3. Every `Dag` created inside `dags` folder will be visible and usable inside `Airflow`
 4. You can use package `nvtop` to monitor gpu usage [nvtop github](https://github.com/Syllo/nvtop)
+5. There are already created volumes for storing `sql`, and saving raw data for processing `data` (for more complex projects it should be replaced with some `S3` integration)
 
 
 ## Known limitations
@@ -100,4 +101,4 @@ AIRFLOW_GID=0
 
 
 ## Credits
-Parts of that template was created based on this tutorial [coder2j YouTube tutorial](https://www.youtube.com/watch?v=K9AnJ9_ZAXE) and some insights from this [Reddit thread](https://www.reddit.com/r/LocalLLaMA/comments/17ffbg9/using_langchain_with_llamacpp/)
+Parts of that template was created based on this tutorial [coder2j YouTube tutorial](https://www.youtube.com/watch?v=K9AnJ9_ZAXE) [coder2j github repo](https://github.com/coder2j/airflow-docker) and some insights from this [Reddit thread](https://www.reddit.com/r/LocalLLaMA/comments/17ffbg9/using_langchain_with_llamacpp/)
