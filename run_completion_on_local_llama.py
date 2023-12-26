@@ -14,7 +14,6 @@ llm = ChatOpenAI(temperature=0.7,
                     # "stop": ["[/INST]"],
                     # "max_tokens": 3000
                 },
-                # logit_bias={},
                 streaming=True,
                 )
 
