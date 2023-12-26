@@ -96,7 +96,7 @@ AIRFLOW_GID=0
 
 ## Known limitations
 1. Currently these template has no support for kubernetes, but it may be added relatively easy
-2. This template uses default passwords
+2. This template uses default passwords for Aiflow, PostgreSQL and that should be changed in `docker-compose.yaml`
 
 
 ## Credits
