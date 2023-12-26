@@ -2,4 +2,4 @@
 
 docker remove llm-server
 
-docker run --gpus all -d -v "$(pwd)/models:/app/models" -p 5555:8080 --name llm-server llm-server
+docker run --gpus all --network="host" -d -v "$(pwd)/models:/app/models" -p 5556:5556 --name llm-server llm-server

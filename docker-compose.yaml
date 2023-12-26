@@ -87,10 +87,13 @@ x-airflow-common:
       condition: service_healthy
     postgres:
       condition: service_healthy
+  networks:
+    - connection_to_airflow
+  
 
 services:
   postgres:
-    image: postgres:13
+    image: postgres:15
     environment:
       POSTGRES_USER: airflow
       POSTGRES_PASSWORD: airflow
@@ -105,6 +108,8 @@ services:
       retries: 5
       start_period: 5s
     restart: always
+    networks:
+      - connection_to_airflow
 
   redis:
     image: redis:latest
@@ -117,6 +122,8 @@ services:
       retries: 50
       start_period: 30s
     restart: always
+    networks:
+      - connection_to_airflow
 
   airflow-webserver:
     <<: *airflow-common
@@ -134,6 +141,9 @@ services:
       <<: *airflow-common-depends-on
       airflow-init:
         condition: service_completed_successfully
+    networks:
+      - connection_to_airflow
+
 
   airflow-scheduler:
     <<: *airflow-common
@@ -149,6 +159,10 @@ services:
       <<: *airflow-common-depends-on
       airflow-init:
         condition: service_completed_successfully
+    networks:
+      - connection_to_airflow
+    
+
 
   airflow-worker:
     <<: *airflow-common
@@ -172,6 +186,9 @@ services:
       <<: *airflow-common-depends-on
       airflow-init:
         condition: service_completed_successfully
+    networks:
+      - connection_to_airflow
+
 
   airflow-triggerer:
     <<: *airflow-common
@@ -187,6 +204,8 @@ services:
       <<: *airflow-common-depends-on
       airflow-init:
         condition: service_completed_successfully
+    networks:
+      - connection_to_airflow
 
   airflow-init:
     <<: *airflow-common
@@ -265,6 +284,8 @@ services:
     user: "0:0"
     volumes:
       - ${AIRFLOW_PROJ_DIR:-.}:/sources
+    networks:
+      - connection_to_airflow
 
   airflow-cli:
     <<: *airflow-common
@@ -278,6 +299,8 @@ services:
       - bash
       - -c
       - airflow
+    networks:
+      - connection_to_airflow
 
   # You can enable flower by adding "--profile flower" option e.g. docker-compose --profile flower up
   # or by explicitly targeted on the command line e.g. docker-compose up flower.
@@ -300,6 +323,28 @@ services:
       <<: *airflow-common-depends-on
       airflow-init:
         condition: service_completed_successfully
+    networks:
+      - connection_to_airflow
+
+  llm-server:
+    image: llm-server
+    build: .
+    ports:
+      - "5556:5556"
+    volumes:
+      - "./models:/app/models"
+    deploy:
+      resources:
+        reservations:
+          devices:
+          - driver: nvidia
+            capabilities: [gpu]
+    networks:
+      - connection_to_airflow
 
 volumes:
   postgres-db-volume:
+
+networks:
+  connection_to_airflow:
+    driver: bridge
