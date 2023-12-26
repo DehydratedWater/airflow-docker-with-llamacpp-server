@@ -94,9 +94,7 @@ AIRFLOW_GID=0
 
 ## Known Limitations
 1. Currently, this template does not support Kubernetes, but it could be added relatively easily.
-2. The template uses default passwords for Air
-
-flow and PostgreSQL, which should be changed in `docker-compose.yaml`.
+2. The template uses default passwords for Airflow and PostgreSQL, which should be changed in `docker-compose.yaml`.
 
 ## Credits
 Parts of this template were created based on this tutorial: [coder2j's YouTube tutorial](https://www.youtube.com/watch?v=K9AnJ9_ZAXE) and [coder2j's GitHub repo](https://github.com/coder2j/airflow-docker), along with insights from this [Reddit thread](https://www.reddit.com/r/LocalLLaMA/comments/17ffbg9/using_langchain_with_llamacpp/).
