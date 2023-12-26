@@ -50,10 +50,10 @@ Tue Dec 26 14:02:31 2023
 ```
 
 4. `Python 3.11` installed
-5. Instaled `docker` with configured sudo-less docker user (https://www.digitalocean.com/community/tutorials/how-to-install-and-use-docker-on-ubuntu-22-04)[Docker installation on Ubuntu 22.04], 
-6. Installed `docker compose` (https://www.digitalocean.com/community/tutorials/how-to-install-and-use-docker-compose-on-ubuntu-22-04)[Docker compose installation tutorial on Ubuntu 22.04]
+5. Instaled `docker` with configured sudo-less docker user [Docker installation on Ubuntu 22.04](https://www.digitalocean.com/community/tutorials/how-to-install-and-use-docker-on-ubuntu-22-04), 
+6. Installed `docker compose` [Docker compose installation tutorial on Ubuntu 22.04](https://www.digitalocean.com/community/tutorials/how-to-install-and-use-docker-compose-on-ubuntu-22-04)
 6. Instaled `poetry`, used for local type checking and dag development
-7. Model in `GUFF` format (https://huggingface.co/TheBloke)[Good place to find models]
+7. Model in `GUFF` format [Good place to find models, TheBloke](https://huggingface.co/TheBloke)
 
 __Warning__: _You may need to adapt Nvidia image version used in `LocalLLamaCPPServerDockerfile` to use CUDA version compatible with your driver, in my example it is `CUDA Version: 12.2`_
 
@@ -91,7 +91,7 @@ AIRFLOW_GID=0
 1. After installation connect poetry enviroment to your IDE to have typechecking
 2. You may use `DBeaver` or similar tool, to create extra database in provided `PostgreSQL` and use `airflow postgres hooks` to communicate with it from inside `Airflow dags`
 3. Every `Dag` created inside `dags` folder will be visible and usable inside `Airflow`
-4. You can use package `nvtop` to monitor gpu usage (https://github.com/Syllo/nvtop)[nvtop github]
+4. You can use package `nvtop` to monitor gpu usage [nvtop github](https://github.com/Syllo/nvtop)
 
 
 ## Known limitations
@@ -100,4 +100,4 @@ AIRFLOW_GID=0
 
 
 ## Credits
-Parts of that template was created based on this tutorial (https://www.youtube.com/watch?v=K9AnJ9_ZAXE)[coder2j YouTube tutorial] and some insights from this (https://www.reddit.com/r/LocalLLaMA/comments/17ffbg9/using_langchain_with_llamacpp/)[Reddit thread] 
+Parts of that template was created based on this tutorial [coder2j YouTube tutorial](https://www.youtube.com/watch?v=K9AnJ9_ZAXE) and some insights from this [Reddit thread](https://www.reddit.com/r/LocalLLaMA/comments/17ffbg9/using_langchain_with_llamacpp/)
